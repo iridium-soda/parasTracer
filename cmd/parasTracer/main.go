@@ -15,7 +15,10 @@ Usage:
 parasTracer <filename>`
 
 func printUsage() {
-	fmt.Fprintln(os.Stderr, usage)
+	fmt.Fprintln(
+		os.Stderr,
+		usage,
+	)
 	return
 }
 
@@ -35,8 +38,8 @@ func doAnalysis() {
 	if err != nil {
 		fmt.Printf("err = %s", err)
 	}
-	for _, i := range f.Decls {
-		fn, ok := i.(*ast.FuncDecl)
+	for _, decl := range f.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
 		if ok { //Got Function
 			fmt.Printf("Got function decl, name is %s", fn.Name.Name)
 			analysisFunc(fn)
@@ -44,6 +47,9 @@ func doAnalysis() {
 
 	}
 }
+
+//TODO: 注意：循环内的变量分析怎么做？
+//TODO: 注意:分支条件结构的变量分析怎么做?
 func analysisFunc(fn *ast.FuncDecl) {
 	//分析单个函数的传播链
 	//获取形参
